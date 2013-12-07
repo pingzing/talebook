@@ -125,14 +125,14 @@
     <None Include="BirthdayNotifier_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\StoryImages01\1.png" />
-    <Content Include="Assets\StoryImages01\2.png" />
-    <Content Include="Assets\StoryImages01\3.png" />
-    <Content Include="Assets\StoryImages01\honors.jpg" />
     <Content Include="Assets\Logo.png" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\StoryImages01\WIN_20131206_210533.JPG" />
+    <Content Include="Assets\StoryImages01\WIN_20131206_210831.JPG" />
+    <Content Include="Assets\StoryImages01\WIN_20131206_212540.JPG" />
+    <Content Include="Assets\StoryImages01\WIN_20131206_212550.JPG" />
     <Content Include="Common\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

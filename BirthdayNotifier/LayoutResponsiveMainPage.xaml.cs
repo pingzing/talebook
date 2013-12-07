@@ -35,6 +35,7 @@ namespace BirthdayNotifier
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private int TotalPages;
         private List<Image> ImageList = new List<Image>();
+        bool debugging = false;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -56,6 +57,9 @@ namespace BirthdayNotifier
 
         public LayoutResponsiveMainPage()
         {
+#if DEBUG
+            debugging = true;
+#endif
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
@@ -64,28 +68,9 @@ namespace BirthdayNotifier
             CreateAndPrepareToast();
 
             /*After Jan 13 2014*/
-            if (DateTime.Now >= new DateTime(2014, 1, 13))
+            if (DateTime.Now >= new DateTime(2014, 1, 13) || debugging)
             {
-                List<string> stringList = new List<string>();
-                List<TextBlock> blockList = new List<TextBlock>();
-
-                stringList.Add("It looks like it's time for me to test this text box here with some actual text!");
-                stringList.Add("This is my page 2 of the text box strings, so let's take a look at how osething longer looks!");
-                stringList.Add("Test 3");
-                stringList.Add("Test 4");
-                stringList.Add("Too far!");
-                TotalPages = stringList.Count;
-
-                foreach (string str in stringList)
-                {
-                    TextBlock block = new TextBlock();
-                    block.Text = str;
-                    block.Style = (Style)Resources["ApplicationBlockStyle"];
-                    block.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Center;
-                    block.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center;
-                    blockList.Add(block);
-                }
-                TextFlipView.ItemsSource = blockList;
+                DefineStrings("01");
                 LoadImages("01");
             }
             /*Hide the code before Jan 13 2014*/
@@ -99,6 +84,36 @@ namespace BirthdayNotifier
                 singleList.Add(tooEarlyBlock);
                 TextFlipView.ItemsSource = singleList;
             }
+        }
+
+        private void DefineStrings(string storyNumber)
+        {
+            switch (storyNumber)
+            {
+                case "01":
+                    List<string> stringList = new List<string>();
+                    List<TextBlock> blockList = new List<TextBlock>();
+
+                    stringList.Add("One day, Neil was struggling to think of an idea for the perfect birthday present. He racked his brains, but try as he might, he couldn't think of anything!");
+                    stringList.Add("But suddenly, he had an idea! An epiphany!");
+                    stringList.Add("So he put on his glasses...");
+                    stringList.Add("...and got to work.");
+                    stringList.Add("Too far!");
+                    TotalPages = stringList.Count;
+
+                    foreach (string str in stringList)
+                    {
+                        TextBlock block = new TextBlock();
+                        block.Text = str;
+                        block.Style = (Style)Resources["ApplicationBlockStyle"];
+                        block.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Center;
+                        block.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center;
+                        blockList.Add(block);
+                    }
+                    TextFlipView.ItemsSource = blockList;
+                    break;
+            }
+
         }
 
         private void CreateAndPrepareToast()
@@ -116,9 +131,9 @@ namespace BirthdayNotifier
             var toast = new ScheduledToastNotification(toastXml, deliveryTime);
             string id = Guid.NewGuid().ToString().Substring(0, 8);
             toast.Id = id;
-            
-            var toastNotifier = ToastNotificationManager.CreateToastNotifier();            
-            toastNotifier.AddToSchedule(toast);                           
+
+            var toastNotifier = ToastNotificationManager.CreateToastNotifier();
+            toastNotifier.AddToSchedule(toast);
         }
 
         private async void LoadImages(string folderNumber)
