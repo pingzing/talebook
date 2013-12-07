@@ -104,6 +104,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Folder Include="Helper Classes\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -129,6 +130,7 @@
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\StoryImages01\zblackpixel.png" />
     <Content Include="Assets\StoryImages01\WIN_20131206_210533.JPG" />
     <Content Include="Assets\StoryImages01\WIN_20131206_210831.JPG" />
     <Content Include="Assets\StoryImages01\WIN_20131206_212540.JPG" />

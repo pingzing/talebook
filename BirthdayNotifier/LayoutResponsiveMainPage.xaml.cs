@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -36,6 +37,8 @@ namespace BirthdayNotifier
         private int TotalPages;
         private List<Image> ImageList = new List<Image>();
         bool debugging = false;
+        enum eColors { Purple, Gray };
+        eColors CurrentColor = eColors.Purple;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -98,14 +101,36 @@ namespace BirthdayNotifier
                     stringList.Add("But suddenly, he had an idea! An epiphany!");
                     stringList.Add("So he put on his glasses...");
                     stringList.Add("...and got to work.");
-                    stringList.Add("Too far!");
+                    stringList.Add("<i>Snowbird");
+                    stringList.Add("Rake was sweating. That was how he knew he was going to die. From birth, it was a lesson drilled into everyone, every day. Never go overdressed into the cold,"
+                    + "and never overexert yourself. If you start sweating, it will freeze your clothes, they’d said. If your clothes freeze, so too will you. And if you freeze, you will die.");
+                    stringList.Add("And so, Rake was dying. It was the simple, hard, freezing cold truth. He’d been warned, again and again, that to attempt what he had was foolish, childish and "
+                    +"stubborn. But the Rite of Age was sacred, as was the right of each Citizen-To-Be to choose their Rite. The rules governing the Rites were vague and amorphous—intentionally so. "
+                    +"In order to become a Citizen, a Citizen-To-Be was expected to exercise creativity, judgment and ingenuity. That wasn’t to say that every Rite was a one-of-a-kind journey, entirely "
+                    +"unique in and of itself. Nobody would every say it aloud of course, but there were the standard Rites that were perfectly acceptable. Leaving the Community to find a functional piece "
+                    +"of technica was considered a prestigious, if uncreative Rite. No one would think less of you for it, but it would win you neither notoriety nor prestige.");
+                    stringList.Add("Rake, of course, had never even considered a “standard” Rite. For him, forgettable normality was as bad as the shame of failure. He intended to return famous and "
+                    +"heroic or not at all. Unfortunately for his visions of fame and prestige—to say nothing of his continued existence on this mortal coil—it would appear that he would be doing the "
+                    +"latter. ");
+
+
                     TotalPages = stringList.Count;
 
                     foreach (string str in stringList)
                     {
                         TextBlock block = new TextBlock();
-                        block.Text = str;
-                        block.Style = (Style)Resources["ApplicationBlockStyle"];
+                        string textString = str;
+                        if (textString.Contains("<i>"))
+                        {
+                            textString = textString.Substring(textString.IndexOf(">")+1, (textString.Length - 3));
+                            block.Style = (Style)Resources["ItalicApplicationBlockStyle"];
+                        }
+                        else
+                        {
+                            block.Style = (Style)Resources["ApplicationBlockStyle"];
+                        }
+
+                        block.Text = textString;                                               
                         block.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Center;
                         block.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center;
                         blockList.Add(block);
@@ -223,8 +248,35 @@ namespace BirthdayNotifier
                         ImageBox.Child = ImageList[ImageList.Count - 1];
                     }
                 }
+            }            
+            SolidColorBrush purpleBrush = new SolidColorBrush(Colors.Purple);
+            if (currentPage >= 5 && CurrentColor == eColors.Purple)
+            {
+                var myStoryboard = (Storyboard)Resources["PurpleToGrayBoard"];
+                myStoryboard.Stop();
+                foreach (var animation in myStoryboard.Children)
+                {
+                    Storyboard.SetTarget(animation, MainPanel);
+                    CurrentColor = eColors.Gray;
+                }                
+                myStoryboard.Begin();
+                pageTitle.Text = "Snowbird";
+            }
+            else if (currentPage < 5 && CurrentColor == eColors.Gray)
+            {
+                var myStoryboard = (Storyboard)Resources["GrayToPurpleBoard"];
+                myStoryboard.Stop();
+                foreach (var animation in myStoryboard.Children)
+                {
+                    Storyboard.SetTarget(animation, MainPanel);
+                    CurrentColor = eColors.Purple;
+                }
+                myStoryboard.Stop();
+                myStoryboard.Begin();
+                pageTitle.Text = "Happy Birthday";
             }
         }
+
 
         private void pageTitle_SelectionChanged(object sender, RoutedEventArgs e)
         {

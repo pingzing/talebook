@@ -20,6 +20,28 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             <Setter Property="TextAlignment" Value="Center" />
         </Style>
+        <Style TargetType="TextBlock" x:Key="ItalicApplicationBlockStyle">
+            <Setter Property="Padding" Value="90,40,90,40"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontStyle" Value="Italic"/>
+        </Style>
+        <Storyboard x:Key="PurpleToGrayBoard">
+            <ColorAnimation BeginTime="0:0:0"
+                            Duration="0:0:1"
+                            Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                            From="Purple"
+                            To="Gray"/>            
+        </Storyboard>
+        <Storyboard x:Key="GrayToPurpleBoard">
+            <ColorAnimation BeginTime="0:0:0"
+                            Duration="0:0:0.2"
+                            Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
+                            From="Gray"
+                            To="Purple"/>
+        </Storyboard>
 
     </Page.Resources>
 
@@ -28,7 +50,7 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Grid Background="Purple">
+    <Grid x:Name="MainPanel" Background="Purple">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
