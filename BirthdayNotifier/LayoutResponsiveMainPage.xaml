@@ -33,13 +33,13 @@
                             Duration="0:0:1"
                             Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
                             From="Purple"
-                            To="Gray"/>            
+                            To="DarkSlateGray"/>            
         </Storyboard>
         <Storyboard x:Key="GrayToPurpleBoard">
             <ColorAnimation BeginTime="0:0:0"
                             Duration="0:0:0.2"
                             Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
-                            From="Gray"
+                            From="DarkSlateGray"
                             To="Purple"/>
         </Storyboard>
 

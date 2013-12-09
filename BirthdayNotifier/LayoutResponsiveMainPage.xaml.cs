@@ -1,4 +1,5 @@
 ﻿using BirthdayNotifier.Common;
+using BirthdayNotifier.Helper_Classes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,17 +29,17 @@ namespace BirthdayNotifier
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-
-
     public sealed partial class LayoutResponsiveMainPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private int TotalPages;
+        public int TotalPages { get; set; }
+        public List<int> ImagePages { get; set; }
+        private Dictionary<int, Image> PageImageDictionary { get; set; }
         private List<Image> ImageList = new List<Image>();
         bool debugging = false;
         enum eColors { Purple, Gray };
-        eColors CurrentColor = eColors.Purple;
+        private eColors CurrentColor { get; set; }        
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -68,12 +69,15 @@ namespace BirthdayNotifier
             this.navigationHelper.LoadState += navigationHelper_LoadState;
             this.navigationHelper.SaveState += navigationHelper_SaveState;
 
+            CurrentColor = eColors.Purple;
             CreateAndPrepareToast();
+            PageImageDictionary = new Dictionary<int, Image>();
 
             /*After Jan 13 2014*/
             if (DateTime.Now >= new DateTime(2014, 1, 13) || debugging)
-            {
+            {                
                 DefineStrings("01");
+                DefineImagePages("01");
                 LoadImages("01");
             }
             /*Hide the code before Jan 13 2014*/
@@ -89,40 +93,28 @@ namespace BirthdayNotifier
             }
         }
 
+        private void DefineImagePages(string storyNumber)
+        {
+            ImagePages = Stories.GetImagePages(storyNumber);
+        }
+
         private void DefineStrings(string storyNumber)
         {
+            List<string> stringList = new List<string>();
+            stringList = Stories.GetStoryText(storyNumber);
+            List<TextBlock> blockList = new List<TextBlock>();
+
             switch (storyNumber)
             {
-                case "01":
-                    List<string> stringList = new List<string>();
-                    List<TextBlock> blockList = new List<TextBlock>();
-
-                    stringList.Add("One day, Neil was struggling to think of an idea for the perfect birthday present. He racked his brains, but try as he might, he couldn't think of anything!");
-                    stringList.Add("But suddenly, he had an idea! An epiphany!");
-                    stringList.Add("So he put on his glasses...");
-                    stringList.Add("...and got to work.");
-                    stringList.Add("<i>Snowbird");
-                    stringList.Add("Rake was sweating. That was how he knew he was going to die. From birth, it was a lesson drilled into everyone, every day. Never go overdressed into the cold,"
-                    + "and never overexert yourself. If you start sweating, it will freeze your clothes, they’d said. If your clothes freeze, so too will you. And if you freeze, you will die.");
-                    stringList.Add("And so, Rake was dying. It was the simple, hard, freezing cold truth. He’d been warned, again and again, that to attempt what he had was foolish, childish and "
-                    +"stubborn. But the Rite of Age was sacred, as was the right of each Citizen-To-Be to choose their Rite. The rules governing the Rites were vague and amorphous—intentionally so. "
-                    +"In order to become a Citizen, a Citizen-To-Be was expected to exercise creativity, judgment and ingenuity. That wasn’t to say that every Rite was a one-of-a-kind journey, entirely "
-                    +"unique in and of itself. Nobody would every say it aloud of course, but there were the standard Rites that were perfectly acceptable. Leaving the Community to find a functional piece "
-                    +"of technica was considered a prestigious, if uncreative Rite. No one would think less of you for it, but it would win you neither notoriety nor prestige.");
-                    stringList.Add("Rake, of course, had never even considered a “standard” Rite. For him, forgettable normality was as bad as the shame of failure. He intended to return famous and "
-                    +"heroic or not at all. Unfortunately for his visions of fame and prestige—to say nothing of his continued existence on this mortal coil—it would appear that he would be doing the "
-                    +"latter. ");
-
-
+                case "01": //Snowbird                                                            
                     TotalPages = stringList.Count;
-
                     foreach (string str in stringList)
                     {
                         TextBlock block = new TextBlock();
                         string textString = str;
                         if (textString.Contains("<i>"))
                         {
-                            textString = textString.Substring(textString.IndexOf(">")+1, (textString.Length - 3));
+                            textString = textString.Substring(textString.IndexOf(">") + 1, (textString.Length - 3));
                             block.Style = (Style)Resources["ItalicApplicationBlockStyle"];
                         }
                         else
@@ -130,7 +122,7 @@ namespace BirthdayNotifier
                             block.Style = (Style)Resources["ApplicationBlockStyle"];
                         }
 
-                        block.Text = textString;                                               
+                        block.Text = textString;
                         block.VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Center;
                         block.HorizontalAlignment = Windows.UI.Xaml.HorizontalAlignment.Center;
                         blockList.Add(block);
@@ -138,7 +130,6 @@ namespace BirthdayNotifier
                     TextFlipView.ItemsSource = blockList;
                     break;
             }
-
         }
 
         private void CreateAndPrepareToast()
@@ -178,6 +169,13 @@ namespace BirthdayNotifier
             }
             System.Diagnostics.Debug.WriteLine("Done loading images!");
             ImageBox.Child = ImageList[TextFlipView.SelectedIndex];
+
+            int i = 0;
+            foreach (int page in ImagePages)
+            {
+                PageImageDictionary.Add(page, ImageList[i]);
+                i++;
+            }
         }
 
         /// <summary>
@@ -232,23 +230,24 @@ namespace BirthdayNotifier
 
         private void TextFlipView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //Handle image and page number changing
             int count = TextFlipView.Items.Count;
             int currentPage = TextFlipView.SelectedIndex + 1;
             PageBlock.Text = "Page: " + currentPage + "/" + TotalPages;
             if (TextFlipView.SelectedIndex != -1)
             {
-                if (ImageList != null && TextFlipView.SelectedIndex < ImageList.Count && ImageList[TextFlipView.SelectedIndex] != null)
+                if (ImageList != null && PageImageDictionary != null)
                 {
-                    if (TextFlipView.SelectedIndex < ImageList.Count)
+                    if (PageImageDictionary.ContainsKey(TextFlipView.SelectedIndex))
                     {
-                        ImageBox.Child = ImageList[TextFlipView.SelectedIndex];
-                    }
-                    else
-                    {
-                        ImageBox.Child = ImageList[ImageList.Count - 1];
-                    }
+                        Image temp;
+                        PageImageDictionary.TryGetValue(TextFlipView.SelectedIndex, out temp);
+                        ImageBox.Child = temp;
+                    }                   
                 }
             }            
+
+            //Handle background color and Title changing
             SolidColorBrush purpleBrush = new SolidColorBrush(Colors.Purple);
             if (currentPage >= 5 && CurrentColor == eColors.Purple)
             {
@@ -258,7 +257,7 @@ namespace BirthdayNotifier
                 {
                     Storyboard.SetTarget(animation, MainPanel);
                     CurrentColor = eColors.Gray;
-                }                
+                }
                 myStoryboard.Begin();
                 pageTitle.Text = "Snowbird";
             }
