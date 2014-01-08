@@ -12,7 +12,7 @@
 
     <Page.Resources>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">Happy Birthday</x:String>
+        <x:String x:Key="AppName">Talebook</x:String>
         <Style TargetType="TextBlock" x:Key="ApplicationBlockStyle">
             <Setter Property="Padding" Value="90,40,90,40"/>
             <Setter Property="FontSize" Value="20"/>

@@ -143,13 +143,16 @@ namespace BirthdayNotifier
             strings[1].AppendChild(toastXml.CreateTextNode(("Happy birthday! Time to open your present!")));
             ((XmlElement)images[0]).SetAttribute("src", "ms-appx:///Assets/Logo.png");
             ((XmlElement)images[0]).SetAttribute("alt", "Logo");
+            if (deliveryTime > DateTime.Now)
+            {
+                var toast = new ScheduledToastNotification(toastXml, deliveryTime);
+                string id = Guid.NewGuid().ToString().Substring(0, 8);
+                toast.Id = id;
 
-            var toast = new ScheduledToastNotification(toastXml, deliveryTime);
-            string id = Guid.NewGuid().ToString().Substring(0, 8);
-            toast.Id = id;
-
-            var toastNotifier = ToastNotificationManager.CreateToastNotifier();
-            toastNotifier.AddToSchedule(toast);
+                var toastNotifier = ToastNotificationManager.CreateToastNotifier();
+                toastNotifier.AddToSchedule(toast);
+            }
+            
         }
 
         private async void LoadImages(string folderNumber)

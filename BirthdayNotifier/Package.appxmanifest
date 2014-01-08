@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="10707NeilApps.Talebook" Publisher="CN=B458EF9C-1F3A-4DD2-AB1A-76FB5056CF30" Version="1.1.0.0" />
+  <Identity Name="10707NeilApps.Talebook" Publisher="CN=B458EF9C-1F3A-4DD2-AB1A-76FB5056CF30" Version="1.1.0.3" />
   <Properties>
     <DisplayName>Talebook</DisplayName>
     <PublisherDisplayName>NeilApps</PublisherDisplayName>
@@ -15,8 +15,8 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="BirthdayNotifier.App">
-      <m2:VisualElements DisplayName="Story Teller" Description="BirthdayNotifier" BackgroundColor="#DC00FF" ForegroundText="light" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" ToastCapable="true">
-        <m2:DefaultTile ShortName="Storybook">
+      <m2:VisualElements DisplayName="Talebook" Description="BirthdayNotifier" BackgroundColor="#DC00FF" ForegroundText="light" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" ToastCapable="true">
+        <m2:DefaultTile ShortName="Talebook">
           <m2:ShowNameOnTiles>
             <m2:ShowOn Tile="square150x150Logo" />
           </m2:ShowNameOnTiles>
