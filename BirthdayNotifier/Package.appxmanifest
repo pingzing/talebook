@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="fc2a9321-3c19-4a1d-8c43-90080a5bbc2b" Publisher="CN=Image 17" Version="1.1.0.0" />
+  <Identity Name="10707NeilApps.Talebook" Publisher="CN=B458EF9C-1F3A-4DD2-AB1A-76FB5056CF30" Version="1.1.0.0" />
   <Properties>
-    <DisplayName>BirthdayNotifier</DisplayName>
+    <DisplayName>Talebook</DisplayName>
     <PublisherDisplayName>NeilApps</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -15,13 +15,13 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="BirthdayNotifier.App">
-      <m2:VisualElements DisplayName="Story Teller" Description="BirthdayNotifier" BackgroundColor="#464646" ForegroundText="light" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" ToastCapable="true">
-        <m2:DefaultTile>
+      <m2:VisualElements DisplayName="Story Teller" Description="BirthdayNotifier" BackgroundColor="#DC00FF" ForegroundText="light" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" ToastCapable="true">
+        <m2:DefaultTile ShortName="Storybook">
           <m2:ShowNameOnTiles>
             <m2:ShowOn Tile="square150x150Logo" />
           </m2:ShowNameOnTiles>
         </m2:DefaultTile>
-        <m2:SplashScreen Image="Assets\SplashScreen.png" />
+        <m2:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#DC00FF" />
         <m2:InitialRotationPreference>
           <m2:Rotation Preference="portrait" />
           <m2:Rotation Preference="landscape" />

@@ -49,6 +49,7 @@ namespace BirthdayNotifier
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
+                
 
                 if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
@@ -64,7 +65,7 @@ namespace BirthdayNotifier
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof(LayoutResponsiveMainPage), args.Arguments))
+                if (!rootFrame.Navigate(typeof(PasswordPage), args.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
                 }

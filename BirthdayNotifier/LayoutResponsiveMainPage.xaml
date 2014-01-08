@@ -32,15 +32,15 @@
             <ColorAnimation BeginTime="0:0:0"
                             Duration="0:0:1"
                             Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
-                            From="Purple"
-                            To="DarkSlateGray"/>            
+                            From="#FFDC00FF"
+                            To="DarkSlateGray"/>
         </Storyboard>
         <Storyboard x:Key="GrayToPurpleBoard">
             <ColorAnimation BeginTime="0:0:0"
                             Duration="0:0:0.2"
                             Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)"
                             From="DarkSlateGray"
-                            To="Purple"/>
+                            To="#FFDC00FF"/>
         </Storyboard>
 
     </Page.Resources>
@@ -50,7 +50,7 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Grid x:Name="MainPanel" Background="Purple">
+    <Grid x:Name="MainPanel" Background="#FFDC00FF">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -67,12 +67,12 @@
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+            <Button x:Name="backButton" Margin="39,59,40,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                         Style="{StaticResource NavigationBackButtonNormalStyle}"
                         VerticalAlignment="Top"
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button"/>
+                        AutomationProperties.ItemType="Navigation Button" HorizontalAlignment="Stretch" Visibility="Collapsed"/>
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
@@ -81,8 +81,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Viewbox x:Name="ImageBox" HorizontalAlignment="Left" Height="560" Margin="68,24,0,44" VerticalAlignment="Center" Width="auto"  Grid.Row="0" Grid.Column="0">
-                <Image Source="Assets/honors.jpg"></Image>
+            <Viewbox x:Name="ImageBox" Height="560" Margin="68,24,0,44" VerticalAlignment="Center" HorizontalAlignment="Center" Width="auto"  Grid.Row="0" Grid.Column="0">
+                <Image Source="Assets/honors.jpg" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
             </Viewbox>
             <FlipView x:Name="TextFlipView"  VerticalAlignment="Center" Height="560" Margin="0,0,20,20" MaxHeight="555" Grid.Column="1"
                       UseTouchAnimationsForAllNavigation="True" RenderTransformOrigin="0.503,0.514" Grid.Row="0" ManipulationMode="All" SelectionChanged="TextFlipView_SelectionChanged"/>

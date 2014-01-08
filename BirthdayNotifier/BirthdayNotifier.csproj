@@ -12,10 +12,13 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>BirthdayNotifier_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>BirthdayNotifier_StoreKey.pfx</PackageCertificateKeyFile>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <TargetFrameworkVersion />
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>65FBAC927112838F280930849643B4A771573290</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -109,6 +112,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PasswordPage.xaml.cs">
+      <DependentUpon>PasswordPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
@@ -123,25 +129,38 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="BirthdayNotifier_StoreKey.pfx" />
     <None Include="BirthdayNotifier_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.png" />
+    <Content Include="Assets\StoryImages01\52snowbird.jpg" />
+    <Content Include="Assets\StoryImages01\42gloomyroom.jpg" />
+    <Content Include="Assets\StoryImages01\35hall.jpg" />
+    <Content Include="Assets\StoryImages01\05snowbank.jpg" />
+    <Content Include="Assets\StoryImages01\04nowbird.jpg" />
+    <Content Include="Assets\StoryImages01\10whitelight.jpg" />
+    <Content Include="Logo.png" />
     <Content Include="Assets\SmallLogo.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\StoryImages01\zblackpixel.png" />
-    <Content Include="Assets\StoryImages01\WIN_20131206_210533.JPG" />
-    <Content Include="Assets\StoryImages01\WIN_20131206_210831.JPG" />
-    <Content Include="Assets\StoryImages01\WIN_20131206_212540.JPG" />
-    <Content Include="Assets\StoryImages01\WIN_20131206_212550.JPG" />
+    <Content Include="Assets\StoryImages01\72blackpixel.png" />
+    <Content Include="Assets\StoryImages01\00.jpg" />
+    <Content Include="Assets\StoryImages01\01.jpg" />
+    <Content Include="Assets\StoryImages01\02.jpg" />
+    <Content Include="Assets\StoryImages01\03.jpg" />
     <Content Include="Common\ReadMe.txt" />
+    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="PasswordPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Common\StandardStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
