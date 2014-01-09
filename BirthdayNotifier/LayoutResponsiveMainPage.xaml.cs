@@ -39,7 +39,8 @@ namespace BirthdayNotifier
         private List<Image> ImageList = new List<Image>();
         bool debugging = false;
         enum eColors { Purple, Gray };
-        private eColors CurrentColor { get; set; }        
+        private eColors CurrentColor { get; set; }
+        private DateTime UnlockDate = new DateTime(2014, 1, 13);
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -72,25 +73,10 @@ namespace BirthdayNotifier
             CurrentColor = eColors.Purple;
             CreateAndPrepareToast();
             PageImageDictionary = new Dictionary<int, Image>();
+            DefineStrings("01");
+            DefineImagePages("01");
+            LoadImages("01");
 
-            /*After Jan 13 2014*/
-            if (DateTime.Now >= new DateTime(2014, 1, 13) || debugging)
-            {                
-                DefineStrings("01");
-                DefineImagePages("01");
-                LoadImages("01");
-            }
-            /*Hide the code before Jan 13 2014*/
-            else
-            {
-                pageTitle.Text = "Come Back Soon...";
-                PageBlock.Visibility = Visibility.Collapsed;
-                TextBlock tooEarlyBlock = new TextBlock();
-                List<TextBlock> singleList = new List<TextBlock>();
-                tooEarlyBlock.Text = "Come back on January 13th for something nice!";
-                singleList.Add(tooEarlyBlock);
-                TextFlipView.ItemsSource = singleList;
-            }
         }
 
         private void DefineImagePages(string storyNumber)
@@ -135,6 +121,7 @@ namespace BirthdayNotifier
         private void CreateAndPrepareToast()
         {
             DateTime deliveryTime = new DateTime(2014, 1, 13, 10, 0, 0);
+            DateTime deliveryTime2 = new DateTime(2014, 1, 16, 10, 0, 0);
             var toastTemplate = ToastTemplateType.ToastImageAndText02;
             var toastXml = ToastNotificationManager.GetTemplateContent(toastTemplate);
             var strings = toastXml.GetElementsByTagName("text");
@@ -152,7 +139,15 @@ namespace BirthdayNotifier
                 var toastNotifier = ToastNotificationManager.CreateToastNotifier();
                 toastNotifier.AddToSchedule(toast);
             }
-            
+            if(deliveryTime2 > DateTime.Now)
+            {
+                var toast = new ScheduledToastNotification(toastXml, deliveryTime2);
+                string id = Guid.NewGuid().ToString().Substring(0, 8);
+                toast.Id = id;
+
+                var toastNotifier = ToastNotificationManager.CreateToastNotifier();
+                toastNotifier.AddToSchedule(toast);
+            }
         }
 
         private async void LoadImages(string folderNumber)
@@ -222,6 +217,15 @@ namespace BirthdayNotifier
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
+            if (TryRetrieveAuthorization())
+            {
+                backButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                backButton.Visibility = Visibility.Visible;
+                ImageBox.Visibility = Visibility.Collapsed;
+            }
 
         }
 
@@ -247,39 +251,73 @@ namespace BirthdayNotifier
                         Image temp;
                         PageImageDictionary.TryGetValue(TextFlipView.SelectedIndex, out temp);
                         ImageBox.Child = temp;
-                    }                   
+                    }
                 }
-            }            
-
-            //Handle background color and Title changing
-            SolidColorBrush purpleBrush = new SolidColorBrush(Colors.Purple);
-            if (currentPage >= 5 && CurrentColor == eColors.Purple)
-            {
-                var myStoryboard = (Storyboard)Resources["PurpleToGrayBoard"];
-                myStoryboard.Stop();
-                foreach (var animation in myStoryboard.Children)
-                {
-                    Storyboard.SetTarget(animation, MainPanel);
-                    CurrentColor = eColors.Gray;
-                }
-                myStoryboard.Begin();
-                pageTitle.Text = "Snowbird";
             }
-            else if (currentPage < 5 && CurrentColor == eColors.Gray)
+
+            //Display "more to come"if it's before the 13th.
+            if (DateTime.Now <= UnlockDate && !debugging)
             {
-                var myStoryboard = (Storyboard)Resources["GrayToPurpleBoard"];
-                myStoryboard.Stop();
-                foreach (var animation in myStoryboard.Children)
+                if (currentPage >= 5)
                 {
-                    Storyboard.SetTarget(animation, MainPanel);
-                    CurrentColor = eColors.Purple;
+                    Image temp = new Image();
+                    PageImageDictionary.TryGetValue(72, out temp);
+                    ImageBox.Child = temp;
+
+                    ((TextBlock)TextFlipView.SelectedItem).Text = "This page will unlock on " + UnlockDate + "...";
                 }
-                myStoryboard.Stop();
-                myStoryboard.Begin();
-                pageTitle.Text = "Happy Birthday";
+            }
+            else
+            {
+                //Handle background color and Title changing
+                SolidColorBrush purpleBrush = new SolidColorBrush(Colors.Purple);
+                if (currentPage >= 5 && CurrentColor == eColors.Purple)
+                {
+                    var myStoryboard = (Storyboard)Resources["PurpleToGrayBoard"];
+                    myStoryboard.Stop();
+                    foreach (var animation in myStoryboard.Children)
+                    {
+                        Storyboard.SetTarget(animation, MainPanel);
+                        CurrentColor = eColors.Gray;
+                    }
+                    myStoryboard.Begin();
+                    pageTitle.Text = "Snowbird";
+                }
+                else if (currentPage < 5 && CurrentColor == eColors.Gray)
+                {
+                    var myStoryboard = (Storyboard)Resources["GrayToPurpleBoard"];
+                    myStoryboard.Stop();
+                    foreach (var animation in myStoryboard.Children)
+                    {
+                        Storyboard.SetTarget(animation, MainPanel);
+                        CurrentColor = eColors.Purple;
+                    }
+                    myStoryboard.Stop();
+                    myStoryboard.Begin();
+                    pageTitle.Text = "Happy Birthday";
+                }
             }
         }
 
+        private bool TryRetrieveAuthorization()
+        {
+            try
+            {
+                var applicationData = Windows.Storage.ApplicationData.Current;
+                if (applicationData.LocalSettings.Values["isallowed"] != null)
+                {
+                    return (bool)applicationData.LocalSettings.Values["isallowed"];
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         private void pageTitle_SelectionChanged(object sender, RoutedEventArgs e)
         {
