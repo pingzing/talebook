@@ -8,7 +8,7 @@
     xmlns:common="using:BirthdayNotifier.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" SizeChanged="pageRoot_SizeChanged">
 
     <Page.Resources>
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
@@ -76,17 +76,19 @@
             <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid x:Name="ContentGrid" Grid.Row="1">
+        	<Grid.RowDefinitions>
+        		<RowDefinition x:Name="Row1" Height="*" />
+        		<RowDefinition x:Name="Row2" Height="*"/>
+        	</Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition x:Name="Column1" Width="*"/>
+                <ColumnDefinition x:Name="Column2" Width="*"/>
             </Grid.ColumnDefinitions>
-            <Viewbox x:Name="ImageBox" Height="560" Margin="68,24,0,44" VerticalAlignment="Center" HorizontalAlignment="Center" Width="auto"  Grid.Row="0" Grid.Column="0">
-                <Image Source="Assets/honors.jpg" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
-            </Viewbox>
-            <FlipView x:Name="TextFlipView"  VerticalAlignment="Center" Height="560" Margin="0,0,20,20" MaxHeight="555" Grid.Column="1"
+            <Viewbox x:Name="ImageBox" Margin="12,12,12,12" VerticalAlignment="Center" HorizontalAlignment="Center" Width="Auto"  Grid.Row="0" Grid.Column="0" Height="Auto"/>
+            <FlipView x:Name="TextFlipView"  VerticalAlignment="Center" Height="Auto" Margin="0,42,20,26" MaxHeight="555" Grid.Column="1"
                       UseTouchAnimationsForAllNavigation="True" RenderTransformOrigin="0.503,0.514" Grid.Row="0" ManipulationMode="All" SelectionChanged="TextFlipView_SelectionChanged"/>
-            <TextBlock x:Name="PageBlock" HorizontalAlignment="Right"  Grid.Row="1" Margin="5,5,5,5" TextWrapping="Wrap" Text="Page 8/88" VerticalAlignment="Bottom" Height="15" Grid.Column="1"/>
+            <TextBlock x:Name="PageBlock" HorizontalAlignment="Right" Margin="0,0,5,1" TextWrapping="Wrap" Text="Page 8/88" VerticalAlignment="Bottom" Height="15" Grid.Column="1" Width="49"/>
         </Grid>
     </Grid>
 </Page>

@@ -12,6 +12,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Notifications;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -139,7 +140,7 @@ namespace BirthdayNotifier
                 var toastNotifier = ToastNotificationManager.CreateToastNotifier();
                 toastNotifier.AddToSchedule(toast);
             }
-            if(deliveryTime2 > DateTime.Now)
+            if (deliveryTime2 > DateTime.Now)
             {
                 var toast = new ScheduledToastNotification(toastXml, deliveryTime2);
                 string id = Guid.NewGuid().ToString().Substring(0, 8);
@@ -322,6 +323,56 @@ namespace BirthdayNotifier
         private void pageTitle_SelectionChanged(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        ApplicationViewOrientation? orientation;
+        Double applicationWidth;
+        private void pageRoot_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ApplicationView view = ApplicationView.GetForCurrentView();
+
+            ApplicationViewOrientation newOrientation = view.Orientation;
+            Double newWidth = Window.Current.Bounds.Width;
+            bool shrunk = newWidth > applicationWidth;
+            bool grew = newWidth < applicationWidth;
+
+            if ((this.orientation == null) || (this.orientation != newOrientation) || shrunk || grew)
+            {
+                if (newOrientation == ApplicationViewOrientation.Landscape || (newOrientation != ApplicationViewOrientation.Portrait && newWidth >= 700))
+                {
+                    Column1.Width = new GridLength(Window.Current.Bounds.Width / 2);
+                    Column2.Width = new GridLength(Window.Current.Bounds.Width / 2);
+                    Row1.Height = new GridLength(Window.Current.Bounds.Height * 2 / 3);
+                    Row2.Height = new GridLength(0);
+
+                    TextFlipView.SetValue(Grid.ColumnProperty, 1);
+                    TextFlipView.SetValue(Grid.RowProperty, 0);
+
+                    ImageBox.SetValue(Grid.ColumnProperty, 0);
+                    ImageBox.SetValue(Grid.RowProperty, 0);
+                    ImageBox.Width = Column1.ActualWidth;
+
+                    this.orientation = newOrientation;
+                    this.applicationWidth = newWidth;
+                }
+                else if (newOrientation == ApplicationViewOrientation.Portrait || (newOrientation != ApplicationViewOrientation.Landscape && newWidth < 700))
+                {
+                    Column1.Width = new GridLength(Window.Current.Bounds.Width);
+                    Column2.Width = new GridLength(0);
+                    Row1.Height = new GridLength(Window.Current.Bounds.Height / 3);
+                    Row2.Height = new GridLength(Window.Current.Bounds.Height / 3);
+
+                    TextFlipView.SetValue(Grid.ColumnProperty, 0);
+                    TextFlipView.SetValue(Grid.RowProperty, 1);
+
+                    ImageBox.SetValue(Grid.ColumnProperty, 0);
+                    ImageBox.SetValue(Grid.RowProperty, 0);
+                    ImageBox.Width = Window.Current.Bounds.Width;
+
+                    this.orientation = newOrientation;
+                    this.applicationWidth = newWidth;
+                }
+            }
         }
     }
 }
